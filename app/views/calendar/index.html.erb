@@ -1,0 +1,56 @@
+<div class="haeder">
+
+    <div class="left">
+        <div class="title">
+            IT勉強会カレンダー<small> ver 0.1.1</small>
+        </div>
+        <span><%= @month_year %></span>
+    </div>
+
+    <div class="control">
+        <form method="post" action"<%= @today_url %>" name="search">
+            <select name="location" onChange="document.search.submit()">
+                <option value="全国">全国</option>
+                <% @location.each do |l| %>
+                    <option value="<%= l[0] %>" <%= l[0] == @location_key ? "selected" : "" %> ><%= l[0] %></option>
+                <% end %>
+            </select>
+            <input type="text"   name="search" value="<%= @search_key %>" >
+            <input type="submit" value="search">
+        </form>
+        <input type="button" value="prev"  onClick="location.href='<%= @prev_url  %>'">
+        <input type="button" value="today" onClick="location.href='<%= @today_url %>'">
+        <input type="button" value="next"  onClick="location.href='<%= @next_url  %>'">
+    </div>
+
+</div>
+
+<table class="calendar">
+    <thead>
+        <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @month_list.each do |week| %>
+            <tr>
+                <% week.each do |day| %>
+                    <td class="text <%= day == @today ? "today" : "" %>" >
+                        <div class="calendar_day"><%= day %></div>
+                        <% if @events.include?(day.to_s) == true %>
+                            <% @events[day.to_s].each do |event| %>
+                                <div class="events"><a target="_blank" href="<%= event.url %>"><%= event.title %></a></div>
+                            <% end %>
+                        <% end %>
+                    </td>
+                <% end %>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
